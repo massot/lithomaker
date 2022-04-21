@@ -2,13 +2,15 @@ TEMPLATE = app
 TARGET = LithoMaker
 DEPENDPATH += .
 INCLUDEPATH += .
-CONFIG +=
+CONFIG += debug c++17
 RESOURCES += lithomaker.qrc
 RC_FILE = lithomaker.rc
-QT += widgets
+QT += gui widgets 3dcore 3dextras
 TRANSLATIONS = lithomaker_da_DK.ts
-QMAKE_CXXFLAGS += -fopenmp
-LIBS += -fopenmp
+QMAKE_CXX = clang++
+QMAKE_LINK = clang++
+QMAKE_CXXFLAGS +=
+LIBS +=
 
 include(./VERSION)
 DEFINES+=VERSION=\\\"$$VERSION\\\"
@@ -21,7 +23,9 @@ HEADERS += src/mainwindow.h \
            src/checkbox.h \
            src/configpages.h \
            src/configdialog.h \
-           src/aboutbox.h
+           src/aboutbox.h \
+           src/lithophane.h \
+           src/preview.h
 
 SOURCES += src/main.cpp \
            src/mainwindow.cpp \
@@ -31,4 +35,6 @@ SOURCES += src/main.cpp \
            src/checkbox.cpp \
            src/configpages.cpp \
            src/configdialog.cpp \
-           src/aboutbox.cpp
+           src/aboutbox.cpp \
+           src/lithophane.cpp \
+           src/preview.cpp

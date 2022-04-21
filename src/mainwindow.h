@@ -27,6 +27,8 @@
 #ifndef __MAINWINDOW_H__
 #define __MAINWINDOW_H__
 
+#include <memory>
+
 #include <QMainWindow>
 #include <QLineEdit>
 #include <QAction>
@@ -34,19 +36,26 @@
 #include <QMenuBar>
 #include <QProgressBar>
 #include <QPushButton>
+#include <QLabel>
+#include <QEntity>
 
 #include "slider.h"
+#include "lithophane.h"
+#include "preview.h"
+
 
 class MainWindow : public QMainWindow
 {
   Q_OBJECT
     
- public:
+public:
   MainWindow();
   ~MainWindow();
   
 public slots:
-  
+  void render();
+  void exportStl();
+
 protected:
   
 signals:
@@ -60,13 +69,12 @@ private slots:
 private:
   void enableUi();
   void disableUi();
-  void createMesh();
-  void exportStl();
-  int getPixel(const QImage &image, const int &x, const int &y);
   void createActions();
   void createMenus();
+
+  const QImage getImage();
+
   //QByteArray stlString;
-  QList<QVector3D> polygons;
   Slider *minThicknessSlider;
   //QLineEdit *minThicknessLineEdit;
   Slider *totalThicknessSlider;
@@ -78,9 +86,11 @@ private:
   QPushButton *inputButton;
   QLineEdit *inputLineEdit;
   QPushButton *outputButton;
-  QProgressBar *renderProgress;
   QPushButton *renderButton;
+  QPushButton *exportButton;
   QLineEdit *outputLineEdit;
+  QProgressBar *renderProgress;
+  QLabel* statusMessage;
   QAction *quitAct;
   QAction *preferencesAct;
   QAction *aboutAct;
@@ -89,15 +99,8 @@ private:
   QMenu *helpMenu;
   QMenuBar *menuBar;
 
-  float depthFactor = -1.0;
-  float widthFactor = -1.0;
-  float border = -1.0;
-  
-  QVector3D getVertex(float x, float y, float z, const bool &scale = false);
-  
-  QList<QVector3D> addFrame(const float &width, const float &height);
-  QList<QVector3D> addHangers(const float &width, const float &height);
-  QList<QVector3D> addStabilizer(const float &x, const float &height);
+  Preview* preview;
+  std::unique_ptr<Lithophane> lithophane = std::make_unique<Lithophane>();
 };
 
 #endif // __MAINWINDOW_H__
